@@ -1,4 +1,4 @@
-package pipeline
+package main
 
 import (
 	"context"
@@ -28,8 +28,13 @@ func NewMD5Node(parallelism int) *MD5Node {
 	}
 }
 
-func (n *MD5Node) SetInput(ch <-chan string) { n.input = ch }
-func (n *MD5Node) Output() <-chan MD5Result  { return n.output }
+func (n *MD5Node) SetInput(ch <-chan string) {
+	n.input = ch
+}
+
+func (n *MD5Node) Output() <-chan MD5Result {
+	return n.output
+}
 
 func (n *MD5Node) Inputs() []<-chan string {
 	if n.input == nil {
@@ -37,8 +42,14 @@ func (n *MD5Node) Inputs() []<-chan string {
 	}
 	return []<-chan string{n.input}
 }
-func (n *MD5Node) Outputs() []chan<- MD5Result { return []chan<- MD5Result{n.output} }
-func (n *MD5Node) Name() string                { return "MD5Node" }
+
+func (n *MD5Node) Outputs() []chan<- MD5Result {
+	return []chan<- MD5Result{n.output}
+}
+
+func (n *MD5Node) Name() string {
+	return "MD5Node"
+}
 
 func (n *MD5Node) Run(ctx context.Context) error {
 	defer close(n.output)

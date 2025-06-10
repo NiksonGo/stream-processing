@@ -1,4 +1,4 @@
-package pipeline
+package main
 
 import (
 	"context"
@@ -13,18 +13,24 @@ func NewPrinterNode() *PrinterNode {
 	return &PrinterNode{}
 }
 
-func (p *PrinterNode) SetInput(ch <-chan MD5Result) { p.input = ch }
+func (p *PrinterNode) SetInput(ch <-chan MD5Result) {
+	p.input = ch
+}
+
 func (p *PrinterNode) Inputs() []<-chan MD5Result {
 	if p.input == nil {
 		return nil
 	}
 	return []<-chan MD5Result{p.input}
 }
+
 func (p *PrinterNode) Outputs() []chan<- MD5Result {
 	return nil
 }
 
-func (p *PrinterNode) Name() string          { return "PrinterNode" }
+func (p *PrinterNode) Name() string {
+	return "PrinterNode"
+}
 
 func (p *PrinterNode) Run(ctx context.Context) error {
 	for {
@@ -43,4 +49,3 @@ func (p *PrinterNode) Run(ctx context.Context) error {
 		}
 	}
 }
-

@@ -19,20 +19,18 @@ func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 
-	walker := pipeline.NewFileWalker(root)
-	md5 := pipeline.NewMD5Node(10)
-	printer := pipeline.NewPrinterNode()
+	walker := NewFileWalker(root)
+	md5 := NewMD5Node(10)
+	printer := NewPrinterNode()
 
 	md5.SetInput(walker.Output())
 	printer.SetInput(md5.Output())
 
 	graph := pipeline.NewGraph()
-	pipeline.AddNode(graph, walker)         // Node[string]
-    pipeline.AddBidiNode(graph, md5)        // BidiNode[string, MD5Result]
-    pipeline.AddNode[pipeline.MD5Result](graph, printer)
-       // Node[MD5Result]
 
-
+	pipeline.AddNode(graph, walker)
+	pipeline.AddBidiNode(graph, md5)
+	pipeline.AddNode(graph, printer)
 
 	if err := graph.Run(ctx); err != nil {
 		log.Fatal(err)
