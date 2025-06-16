@@ -16,7 +16,7 @@ func main() {
 	builder := pipeline.NewBuilder().WithBufferSize(100)
 
 	// Инициализируем ноды
-	fileWalker := pipeline.NewFileWalker("/home/nikgo/testdir")
+	fileWalker := pipeline.NewFileWalker(".")// здесь вписать свое
 	md5Node := pipeline.NewMD5Node(4, 100) // Параллелизм 4, буфер 100
 	printerNode := pipeline.NewPrinterNode()
 
